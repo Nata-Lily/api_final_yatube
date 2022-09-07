@@ -41,11 +41,6 @@ class FollowSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault()
     )
 
-    def validate_following(self, value):
-        if self.context['request'].user == value:
-            raise serializers.ValidationError('Подписка на себя запрещена!')
-        return value
-
     class Meta:
         fields = ('user', 'following')
         model = Follow
@@ -55,3 +50,8 @@ class FollowSerializer(serializers.ModelSerializer):
                 fields=('user', 'following')
             )
         ]
+
+    def validate_following(self, value):
+        if self.context['request'].user == value:
+            raise serializers.ValidationError('Подписка на себя запрещена!')
+        return value
